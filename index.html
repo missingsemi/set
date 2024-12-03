@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    [data-color=red] { color: red; }
+    [data-color=green] { color: green; }
+    [data-color=blue] { color: indigo; }
+
+    [data-pattern=hollow] { fill: none; }
+    [data-pattern=striped] { fill: currentColor; --mask: url("#stripes");}
+    [data-pattern=solid] { fill: currentColor; }
+  </style>
+
+  <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+    <defs>
+      <pattern id="stripe-pattern" width="20" height="1.5" patternUnits="userSpaceOnUse" fill="transparent">
+        <line x1="0" y1="0" x2="20" y2="0" stroke-width="1.5" stroke="white" />
+      </pattern>
+
+      <mask id="stripes" width="20" height="40">
+        <rect x="0" y="0" width="20" height="40" fill="url(#stripe-pattern)" />black
+      </mask>
+
+      <symbol id="diamond" viewBox="0 0 20 40">
+        <path stroke="currentColor" d="M1 20L10 1L19 20L10 39Z" mask="var(--mask)" />
+        <path stroke="currentColor" d="M1 20L10 1L19 20L10 39Z" fill="none" />
+      </symbol>
+
+      <symbol id="pill" viewBox="0 0 20 40">
+        <path stroke="currentColor" d="M1 9A9 8 180 1 1 19 9L19 29A9 8 180 1 1 1 29Z" mask="var(--mask)" />
+        <path stroke="currentColor" d="M1 9A9 8 180 1 1 19 9L19 29A9 8 180 1 1 1 29Z" fill="none" />
+      </symbol>
+
+      <symbol id="squiggle" viewBox="0 0 20 40">
+        <path stroke="currentColor" d="M10.75 1.45A7.1 5.5 0 0 0 1 8C8 20 -6 29 8 38A7 5.5 0 0 0 19 34C20 28.5 12.5 29 16.51 16C19 6 13 2.2 11 1.5Z" mask="var(--mask)" />
+        <path stroke="currentColor" d="M10.75 1.45A7.1 5.5 0 0 0 1 8C8 20 -6 29 8 38A7 5.5 0 0 0 19 34C20 28.5 12.5 29 16.51 16C19 6 13 2.2 11 1.5Z" fill="none" />
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <script>
+    const createSvg = (color, shape, pattern) => {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("data-color", color);
+      svg.setAttribute("data-pattern", pattern);
+      // svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      svg.setAttribute("role", "img");
+      svg.setAttribute("width", "100");
+      svg.setAttribute("height", "200");
+
+      const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      use.setAttribute("href", `#${shape}`);
+
+      svg.appendChild(use);
+
+      return svg;
+    };
+
+
+    const main = () => {
+      const body = document.querySelector("body");
+
+      for (const color of ['red', 'blue', 'green']) {
+        for (const shape of ['pill', 'diamond', 'squiggle']) {
+          for (const pattern of ['striped', 'hollow', 'solid']) {
+            body.appendChild(createSvg(color, shape, pattern));
+          }
+        }
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", main);
+  </script>
+</head>
+<body>
+</body>
+</html>
